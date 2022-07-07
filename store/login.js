@@ -12,11 +12,21 @@ export const mutations = {
 }
 
 export const  actions = {
-    loginApi(context, parametros) {
-        return axios.post('token/', {'password': parametros.password, 'username': parametros.username})
-                    .then(response => {
-                        localStorage.setItem('token', response.data.access)
-                    })
-                    .finally(() => this.$router.push('/'))
+    async loginApi(context, parametros) {
+        try {
+            await axios.post('token/', {'password': parametros.password, 'username': parametros.username})
+                        .then(response => {
+                            localStorage.setItem('token', response.data.access)
+                            const token = localStorage.getItem("token");
+                            if (token) {
+                                return this.$router.push("/");
+                            }
+                            return this.$router.push("login");
+                        })
+        } catch(error) {
+            // console.log(error.response.status);
+            return this.$router.push("login");
+        }
+        
     },
 }

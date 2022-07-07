@@ -18,9 +18,8 @@ export default({
     data() {
       return {
         menu: [
-            'Home',
-            'Produtos',
-            'Categorias'
+            { url: '/', nome: 'Home' },
+            { url: '/categoria', nome: 'Categorias' },
         ]
       }
     }

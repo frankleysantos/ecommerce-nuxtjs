@@ -7,16 +7,20 @@
     <v-container class="py-0 fill-height">
     <v-avatar
         class="mr-10"
-        color="grey darken-1"
         size="32"
-    ></v-avatar>
+        width="120"
+    >
+        <img src="logo_dark.svg" alt="" srcset="">
+    </v-avatar>
+    
 
     <v-btn
-        v-for="link in links"
-        :key="link"
+        v-for="(link, key) in links"
+        :key="key"
         text
+        :to="link.url"
     >
-        {{ link }}
+        {{ link.nome }}
     </v-btn>
 
     <v-spacer></v-spacer>
@@ -30,6 +34,7 @@
         solo-inverted
         ></v-text-field>
     </v-responsive>
+    <v-btn text @click="logout">Logout</v-btn>
     </v-container>
 </v-app-bar>
 </template>
@@ -40,7 +45,7 @@ export default {
     methods: {
         logout() {
             localStorage.removeItem('token');
-            return this.$router.push('login')
+            return this.$router.push('/login')
         }
     },
     props:['links']

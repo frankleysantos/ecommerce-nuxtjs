@@ -15,16 +15,16 @@ export const mutations = {
 }
 
 export const  actions = {
-    todosProdutos(context) {
+    async todosProdutos(context) {
         try {
-            let produtos = axios.get('/produto/api/lista/')
+            let produtos = await axios.get('/produto/api/lista/')
                                 .then((response) => context.commit('LISTA_PRODUTO', response.data))
             return produtos;
         } catch (error) {
-            if (error.response.status == 401) {
-                localStorage.removeItem('token');
-                return this.$router.push('/login');
-            }
+            // if (error.response.status == 401) {
+            //     localStorage.removeItem('token');
+            //     return this.$router.push('/login');
+            // }
         }
     },
     async detalheProduto(context, id) {

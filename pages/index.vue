@@ -17,8 +17,8 @@ export default {
       return this.$router.push("login");
     }
   },
-  mounted() {
-    this.produtos();
+  async fetch() {
+    await this.produtos();
   },
   data() {
     return {

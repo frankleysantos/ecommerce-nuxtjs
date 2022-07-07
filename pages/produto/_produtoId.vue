@@ -1,17 +1,15 @@
 <template>
    <v-container>
-    <div>
-        {{template}}
-    </div>
+        <produto-detalheProdutos :produto="produto"/>
    </v-container>
 </template>
 
 <script>
 export default {
-    created() {
+    async fetch() {
         this.produto.id = this.$route.params.produtoId;
-        if(this.produto.id) {
-            this.detalhesProduto();
+        if (this.produto.id) {
+            await this.detalhesProduto()
         }
     },
     data() {
@@ -33,12 +31,9 @@ export default {
     },
     methods: {
         detalhesProduto:  function() {
-            this.$store.dispatch('produto/detalheProduto', this.produto.id)
+            return this.$store.dispatch('produto/detalheProduto', this.produto.id)
                         .then((resp) => {
                             this.produto = this.$store.state.produto.produto
-                            if(this.produto[0].nome) {
-                                this.template = '{{<produto-detalheProdutos :produto="produto"/>}}'
-                            }
                         })
         }
     }

@@ -41,7 +41,7 @@
                             <v-col md="9">
                                 <p>Voltagem</p>
 
-                                <v-btn-toggle v-model="toggle_none">
+                                <v-btn-toggle v-model="carrinho.produto.voltagem">
                                     <v-btn>
                                         110
                                     </v-btn>
@@ -87,6 +87,15 @@
 
 <script>
 export default {
+    data() {
+        return {
+            carrinho: {
+                produto: {
+                    voltagem: null
+                }
+            }
+        }
+    },
     props: ['produto']
 }
 </script>

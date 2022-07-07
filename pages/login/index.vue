@@ -49,9 +49,9 @@ export default {
         }
     },
     methods: {
-        formLogin: function() {
-            this.$store.dispatch('login/loginApi', this.login)
-        }
+        formLogin: async function() {
+           await this.$store.dispatch('login/loginApi', this.login)
+        },
     }
 }
 </script>
