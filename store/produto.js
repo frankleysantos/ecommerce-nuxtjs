@@ -5,9 +5,8 @@ export const state = () => ({
 })
 
 export const mutations = {
-    NOVO_PRODUTO(state, nova_empresa){
-        state.empresa = [];
-        state.empresa.push(nova_empresa);  
+    NOVO_PRODUTO(state, novo_produto){
+        state.produto.push(novo_produto);  
     },
     LISTA_PRODUTO(state, produtos){
         state.produto = produtos;  
@@ -22,7 +21,7 @@ export const  actions = {
             return produtos;
         } catch (error) {
             // if (error.response.status == 401) {
-            //     localStorage.removeItem('token');
+            //     localStorage.clear();
             //     return this.$router.push('/login');
             // }
         }
@@ -39,5 +38,22 @@ export const  actions = {
             }
         }
         
+    },
+    cadastro(context, parametros) {
+        const data = new FormData()
+        var fotosProdutos = []
+        data.append('nome', parametros.nome)
+        data.append('categoria_id', parametros.categoria.id)
+        data.append('descricao', parametros.descricao)
+        data.append('valor', parametros.valor)
+        data.append('desconto', parametros.desconto)
+        data.append('imagem_principal', parametros.imagem_principal)
+        // console.log(data)
+        parametros.fotos.forEach(function(foto, key) {
+            data.append('fotos', foto)
+        })
+        
+        return axios.post('/produto/api/inserir/', data)
+                    .then((response) => context.commit('NOVO_PRODUTO', response.data))
     }
 }

@@ -20,6 +20,7 @@ export default({
         menu: [
             { url: '/', nome: 'Home' },
             { url: '/categoria', nome: 'Categorias' },
+            { url: '/produto/cadastro', nome: 'Produtos' },
         ]
       }
     }

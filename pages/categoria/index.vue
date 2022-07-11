@@ -36,7 +36,24 @@
                 :headers="headers"
                 :items="categorias"
                 :search="search"
-                ></v-data-table>
+                >
+                    <template v-slot:item.id="{ item }">
+                        <v-icon
+                            small
+                            color="info"
+                           @click="editItem(item)"
+                        >
+                           mdi-text-box-edit-outline
+                        </v-icon>
+                        <v-icon
+                            small
+                            color="error"
+                           @click="deleteItem(item)"
+                        >
+                           mdi-delete
+                        </v-icon>
+                    </template>
+                </v-data-table>
             </v-card>
         </v-col>
     </v-row>
@@ -55,6 +72,7 @@ export default {
             search: '',
             headers: [
                 { text: 'Categoria', value: 'nome' },
+                { text: 'Acões', value: 'id', sortable: false },
             ],
         }
     },
@@ -71,6 +89,12 @@ export default {
         },
         cadastrarCategoria: function() {
             this.$store.dispatch('categoria/cadastrar', this.categoria)
+        },
+        deleteItem: function(categoria) {
+            this.$store.dispatch('categoria/delete', categoria)
+        },
+        editItem: function(item) {
+            alert('edição'+item.id)
         }
     }
 }
