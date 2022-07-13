@@ -1,5 +1,3 @@
-import axios from "../plugins/axios";
-
 export const state = () => ({
         produto: [],
 })
@@ -16,26 +14,34 @@ export const mutations = {
 export const  actions = {
     async todosProdutos(context) {
         try {
-            let produtos = await axios.get('/produto/api/lista/')
-                                .then((response) => context.commit('LISTA_PRODUTO', response.data))
+            this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+            let produtos = await this.$axios.get('/produto/api/lista/')
+            .then((response) => context.commit('LISTA_PRODUTO', response.data))
             return produtos;
         } catch (error) {
-            // if (error.response.status == 401) {
-            //     localStorage.clear();
-            //     return this.$router.push('/login');
-            // }
+            if (error.response.status == 401) {
+                return error.response.status;
+            }
         }
     },
     async detalheProduto(context, id) {
         try {
-            let dados = await  axios.get('/produto/api/detalhes/?id='+id)
-                    .then((response) => context.commit('LISTA_PRODUTO', response.data))
-            return dados;
+            var request = null;
+            this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+            await  this.$axios.get('/produto/api/detalhes/?id='+id)
+            .then((response) => {
+                context.commit('LISTA_PRODUTO', response.data)
+                request = response.data;
+            })
+            .catch((error) => {
+                request = {...error}
+            })
+            return request;
         } catch (error) {
-            if (error.response.status == 401) {
-                localStorage.removeItem('token');
-                return this.$router.push('/login');
-            }
+            // if (error.response.status == 401) {
+            //     localStorage.removeItem('token');
+            //     return this.$router.push('/login');
+            // }
         }
         
     },
@@ -52,8 +58,8 @@ export const  actions = {
         parametros.fotos.forEach(function(foto, key) {
             data.append('fotos', foto)
         })
-        
-        return axios.post('/produto/api/inserir/', data)
-                    .then((response) => context.commit('NOVO_PRODUTO', response.data))
+        this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+        return this.$axios.post('/produto/api/inserir/', data)
+        .then((response) => context.commit('NOVO_PRODUTO', response.data))
     }
 }

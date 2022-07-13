@@ -6,13 +6,14 @@ export default {
   ssr: false,
 
   publicRuntimeConfig: {
-    apiBaseURL: process.env.API_BASE_URL
+    apiBaseURL: process.env.API_BASE_URL,
+    baseUrl: process.env.BASE_URL,
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - projeto-nuxt',
-    title: 'projeto-nuxt',
+    titleTemplate: process.env.NOME_APLICACAO,
+    title: 'Ecommerce',
     htmlAttrs: {
       lang: 'en'
     },
@@ -37,7 +38,8 @@ export default {
   plugins: [
     '~/plugins/vue-snotify.js',
     '~/plugins/vue-maska.js',
-    '~/plugins/vue-localStorage.js'
+    '~/plugins/vue-localStorage.js',
+    // '~/plugins/axios.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,11 +54,9 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/toast',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/axios',
   ],
-  axios: {
-    baseURL: 'http://localhost:8000/',
-  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -75,5 +75,8 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  axios: {
+    baseURL: process.env.API_BASE_URL,
   }
 }

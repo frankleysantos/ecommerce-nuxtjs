@@ -1,5 +1,3 @@
-import axios from "../plugins/axios"
-
 export const state = () => ({
     state: {
         categoria: [],
@@ -25,20 +23,22 @@ export const mutations = {
        
 export const actions = {
     listarCategorias(context, parametros) {
-        return axios.get('categoria/api/categorias/')
+        this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+        return this.$axios.get('categoria/api/categorias/')
             .then((resp) => context.commit('LISTA_CATEGORIA', resp.data))
     },
     cadastrar(context, parametros) {
         const data = new FormData();
         data.append('nome', parametros.nome)
-        return axios.post('categoria/api/cadastrar/', data)
+        this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+        return this.$axios.post('categoria/api/cadastrar/', data)
                     .then((response) => context.commit('NOVA_CATEGORIA', response.data[0]))
     },
     delete(context, parametros) {
         const data = new FormData();
         data.append('id', parametros.id)
-
-        return axios.post('categoria/api/delete/', data)
+        this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+        return this.$axios.post('categoria/api/delete/', data)
                     .then((response) => context.commit('DELETE_CATEGORIA', response.data[0].id))
     }
 }

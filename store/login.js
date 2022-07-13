@@ -1,32 +1,49 @@
-import axios from "../plugins/axios"
-
 export const state = () => ({
-    login: [],
+    user: [],
 })
 
 export const mutations = {
-    // NOVA_EMPRESA(state, nova_empresa){
-    //     state.empresa = [];
-    //     state.empresa.push(nova_empresa);  
-    // },
+    USUARIO_LOGADO(state, user){
+        state.user.push(user);  
+    },
 }
 
 export const  actions = {
     async loginApi(context, parametros) {
         try {
-            await axios.post('token/', {'password': parametros.password, 'username': parametros.username})
-                        .then(response => {
-                            localStorage.setItem('token', response.data.access)
-                            const token = localStorage.getItem("token");
-                            if (token) {
-                                return this.$router.push("/");
-                            }
-                            return this.$router.push("login");
-                        })
+            var request;
+            await this.$axios.post('token/', {'password': parametros.password, 'username': parametros.username})
+            .then(response => {
+                localStorage.setItem('token', response.data.access)
+                request = {'token': localStorage.getItem('token')};
+                this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+            })
+            .catch((error) => {
+                request = {...error}
+            })
+            return request
         } catch(error) {
-            // console.log(error.response.status);
-            return this.$router.push("login");
+            return error;
         }
         
     },
+    async userAuth(context, parametros) {
+        try {
+            var request = null;
+            this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
+            await this.$axios.get('/accounts/api/user/')
+            .then(response => {
+                context.commit('USUARIO_LOGADO', response.data)
+                request = response.data
+            })
+            .catch((error) => {
+                request = {...error}
+            })
+            return request;
+        } catch(error) {
+            if (error.response.status == 401) {
+                return error.response.status;
+            }
+        }
+    }
 }

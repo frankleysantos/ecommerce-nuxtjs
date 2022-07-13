@@ -141,6 +141,12 @@
       },
     }),
 
+    head() {
+      return {
+        titleTemplate: process.env.NOME_APLICACAO + ' - PRODUTO - CADASTRO',
+      }
+    },
+
     async fetch() {
         await this.listaCategoria()
     },

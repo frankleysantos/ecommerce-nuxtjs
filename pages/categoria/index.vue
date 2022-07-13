@@ -65,6 +65,11 @@ export default {
     created() {
         this.categoriasCadastradas()
     },
+    head() {
+      return {
+        titleTemplate: process.env.NOME_APLICACAO + ' - CATEGORIAS',
+      }
+    },
     data() {
         return {
             categorias: [],
@@ -83,7 +88,6 @@ export default {
         categoriasCadastradas: function() {
             this.$store.dispatch('categoria/listarCategorias')
                         .then((resp) => {
-                            // console.log(this.$store.state.categoria.categoria)
                             this.categorias = this.$store.state.categoria.categoria
                         })
         },

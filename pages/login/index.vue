@@ -49,8 +49,11 @@ export default {
         }
     },
     methods: {
-        formLogin: async function() {
-           await this.$store.dispatch('login/loginApi', this.login)
+        formLogin: function() {
+           this.$store.dispatch('login/loginApi', this.login)
+                           .then((response) => {
+                              return this.$router.push('/')
+                           })
         },
     }
 }
