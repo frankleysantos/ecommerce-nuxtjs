@@ -39,6 +39,7 @@ export default {
     '~/plugins/vue-snotify.js',
     '~/plugins/vue-maska.js',
     '~/plugins/vue-localStorage.js',
+    '~/plugins/vue-money-mask.js',
     // '~/plugins/axios.js',
   ],
 

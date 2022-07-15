@@ -47,19 +47,28 @@ export const  actions = {
     },
     cadastro(context, parametros) {
         const data = new FormData()
-        var fotosProdutos = []
         data.append('nome', parametros.nome)
-        data.append('categoria_id', parametros.categoria.id)
+        data.append('categoria_id', parametros.categoria)
         data.append('descricao', parametros.descricao)
-        data.append('valor', parametros.valor)
-        data.append('desconto', parametros.desconto)
+        let valor = parametros.valor
+        valor = valor.replace("R$ ", "")
+        valor = valor.replace(".", "")
+        valor = valor.replace(",", ".")
+        valor = parseFloat(valor)
+        data.append('valor', valor)
+        let desconto = parametros.desconto
+        desconto = desconto.replace("% ", "")
+        desconto = desconto.replace(".", "")
+        desconto = desconto.replace(",", ".")
+        desconto = parseFloat(desconto)
+        data.append('desconto', desconto)
         data.append('imagem_principal', parametros.imagem_principal)
-        // console.log(data)
+
         parametros.fotos.forEach(function(foto, key) {
             data.append('fotos', foto)
         })
         this.$axios.setToken(localStorage.getItem('token'), 'Bearer', ['post', 'delete', 'get', 'put'])
         return this.$axios.post('/produto/api/inserir/', data)
         .then((response) => context.commit('NOVO_PRODUTO', response.data))
-    }
+    },
 }

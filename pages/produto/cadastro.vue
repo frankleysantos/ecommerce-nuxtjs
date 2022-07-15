@@ -35,8 +35,7 @@
               v-model="produto.valor"
               :rules="rules.valor"
               label="Valor do Produto"
-              prepend-icon="R$"
-              required
+              v-money="mask.money"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -44,8 +43,7 @@
               v-model="produto.desconto"
               :rules="rules.desconto"
               label="Desconto do Produto"
-              required
-              prepend-icon="mdi-percent"
+              v-money="mask.desconto"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -113,6 +111,24 @@
       buttonValidate: false,
       select: [],
       items: [],
+      mask: {
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: 'R$ ',
+          // suffix: ' #',
+          precision: 2,
+          masked: false /* doesn't work with directive */
+        },
+        desconto: {
+          decimal: ',',
+          thousands: '.',
+          prefix: '% ',
+          // suffix: ' #',
+          precision: 2,
+          masked: false /* doesn't work with directive */
+        },
+      },
       produto: [
         {
             nome: null,
@@ -155,6 +171,7 @@
       cadastrarProduto: function () {
         this.$refs.form.validate()
         if (this.$refs.form.validate()) {
+          console.log(this.produto)
             this.$store.dispatch('produto/cadastro', this.produto)
         }
       },
